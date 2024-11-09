@@ -1,20 +1,69 @@
 ﻿// HookTestExe.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
-
+#include <memory>
 #include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+#include <windows.h>
+#include "..\hook_Include\Hook.h"
+#include "UntraceHook.h"
+void fun_1() {
+    std::cout << "fun_1\n";
 }
 
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
+void fun_2() {
+	std::cout << "fun_2\n";
+}
 
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
+class MyFun :public HookProc {
+public:
+    void exec(PEXCEPTION_POINTERS cpuInfo) override {
+        std::cout << "hook Fun" << std::endl;
+    }
+};
+
+
+int main() {
+    Hook& hookManager = Hook::getInstance();
+    LPVOID testAddress = reinterpret_cast<LPVOID>(fun_1);
+    LPVOID testAddress_2 = reinterpret_cast<LPVOID>(fun_2);
+    // 测试使用 unique_ptr 传递 hookFun 和 hookOperation
+    auto hookFun = std::make_shared<MyFun>();
+    auto hookOperation = std::make_shared<VehHookOperation>();
+    auto Untracehook = std::make_shared<UntraceHookOperation>();
+    std::cout << "执行函数" << std::endl;
+    fun_1();
+    std::cout << "添加VehHook" << std::endl;
+    
+    hookManager.addHook(testAddress, hookFun, hookOperation);
+    
+    std::cout << "执行函数" << std::endl;
+    fun_1();
+
+    // 移除 hook
+    std::cout << "移除VehHook" << std::endl;
+    
+    hookManager.removeHook(testAddress);
+    
+	std::cout << "执行函数" << std::endl;
+    fun_1();
+
+    
+	// 移除 hook
+	std::cout << "添加无痕Hook" << std::endl;
+
+    hookManager.addHook(testAddress, std::move(hookFun), std::move(Untracehook));
+    std::cout << "执行函数" << std::endl;
+
+    fun_1();
+	// 移除 hook
+    std::cout << "移除无痕hook" << std::endl;
+
+	hookManager.removeHook(testAddress);
+
+    std::cout << "执行函数" << std::endl;
+    fun_1();
+
+    system("pause");
+    return 0;
+}
+
+

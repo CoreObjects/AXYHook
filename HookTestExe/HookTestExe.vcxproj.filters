@@ -13,10 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="hook_Include">
+      <UniqueIdentifier>{a525ff0f-110f-4026-8334-3ef482042179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hook_src">
+      <UniqueIdentifier>{a9b58fc8-2bb0-498f-b598-f1c17b5a2a32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HookTestExe.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\hook_src\Hook.cpp">
+      <Filter>hook_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hook_src\HookHandle.cpp">
+      <Filter>hook_src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hook_src\VehHook.cpp">
+      <Filter>hook_src</Filter>
+    </ClCompile>
+    <ClCompile Include="UntraceHook.cpp">
+      <Filter>hook_src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\hook_Include\Hook.h">
+      <Filter>hook_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hook_Include\HookBase.h">
+      <Filter>hook_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hook_Include\HookHandle.h">
+      <Filter>hook_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hook_Include\VehHook.h">
+      <Filter>hook_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="UntraceHook.h">
+      <Filter>hook_Include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
